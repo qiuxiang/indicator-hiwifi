@@ -9,8 +9,11 @@ from hiwifi import Hiwifi
 
 class App:
     def __init__(self):
+        self.config = {
+            'password': 'your password',
+            'interval': 5,
+        }
         self.menu = Gtk.Menu()
-
         self.indicator = AppIndicator3.Indicator.new(
             'indicator-hiwifi',
             path.abspath(path.dirname(__file__)) + '/icon.svg',
@@ -23,9 +26,7 @@ class App:
         menu_item.connect('activate', Gtk.main_quit)
         self.menu.append(menu_item)
 
-        self.devices = {}
-        self.hifiwi = Hiwifi()
-        self.hifiwi.login('password')
+        self.login()
 
         self.update_traffics_thread = Thread(target=self.update_traffics)
         self.update_traffics_thread.setDaemon(True)
@@ -33,13 +34,20 @@ class App:
 
         Gtk.main()
 
+    def login(self):
+        self.hifiwi = Hiwifi()
+        response = self.hifiwi.login(self.config['password'])
+        if response != True:
+            print(response)
+            exit(1)
+
     def update_traffics(self):
         while True:
             try:
                 data = self.hifiwi.traffics()['data']
                 self.indicator.set_label('↑ %s KB/S    ↓ %s KB/S' % (
                     data['total']['up'], data['total']['down']), '')
-                sleep(4)
+                sleep(self.config['interval'])
             except ConnectionError as error:
                 print(error)
 

@@ -34,5 +34,5 @@ class Hiwifi:
 
 if __name__ == '__main__':
     hiwifi = Hiwifi()
-    hiwifi.login('2099420')
+    hiwifi.login('your password')
     print(hiwifi.devices())
