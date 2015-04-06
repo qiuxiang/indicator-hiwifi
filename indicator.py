@@ -7,7 +7,7 @@ from gi.repository import Gtk, AppIndicator3
 from hiwifi import Hiwifi
 
 
-class App:
+class Indicator:
     def __init__(self):
         self.config = {
             'password': 'your password',
@@ -52,4 +52,4 @@ class App:
                 print(error)
 
 if __name__ == '__main__':
-    app = App()
+    Indicator()
