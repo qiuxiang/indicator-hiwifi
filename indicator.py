@@ -37,7 +37,7 @@ class Indicator:
     def login(self):
         self.hifiwi = Hiwifi()
         response = self.hifiwi.login(self.config['password'])
-        if response != True:
+        if type(response) is str:
             print(response)
             exit(1)
 
